@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         fontSize: 9
     },
     imageBoxBackground: {
-        backgroundColor: GLOBAL_CONFIG.COLOR.NEWS_BOX_BG_COLOR
+        backgroundColor: GLOBAL_CONFIG.COLOR.IMG_BACK_COLOR
     }
 });
 

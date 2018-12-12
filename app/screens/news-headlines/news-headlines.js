@@ -85,11 +85,22 @@ class NewsHeadlines extends Component {
 			>
 				<View style={GlobalStyles.flexDirectionRow}>
 					<View style={[ GlobalStyles.center, GlobalStyles.flexDirectionColumn, styles.imageSection ]}>
-						<View style={[ styles.imageBox, styles.imageBoxBorderRadius, styles.imageBoxBackground ]}>
-							<Image
-								style={[ styles.imageBoxBorderRadius, styles.imageBox ]}
-								source={{ uri: news.urlToImage }}
-							/>
+						<View
+							style={[
+								styles.imageBox,
+								styles.imageBoxBorderRadius,
+								styles.imageBoxBackground,
+								GlobalStyles.center
+							]}
+						>
+							{news.urlToImage != null ? (
+								<Image
+									style={[ styles.imageBoxBorderRadius, styles.imageBox ]}
+									source={{ uri: news.urlToImage }}
+								/>
+							) : (
+								<Icon name="ios-paper" size={30} color={GLOBAL_CONFIG.COLOR.BLACK} />
+							)}
 						</View>
 						<View style={[ GlobalStyles.center, styles.textPadding ]}>
 							<Text style={styles.newsSourceName}>{news.source.name}</Text>
