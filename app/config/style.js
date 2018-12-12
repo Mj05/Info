@@ -8,6 +8,9 @@ const GlobalStyles = StyleSheet.create({
     center: {
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    textAlignCenter: {
+        textAlign: 'center'
     }
 });
 
