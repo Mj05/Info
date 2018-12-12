@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, FlatList, Dimensions, Image } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList, Platform, Image, Linking } from 'react-native';
 import GlobalStyles from '../../config/style';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -8,6 +8,7 @@ import Loader from '../../components/loader';
 import styles from './style';
 import Header from '../../components/header';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { CustomTabs, ANIMATIONS_SLIDE } from 'react-native-custom-tabs';
 
 class NewsHeadlines extends Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -51,9 +52,37 @@ class NewsHeadlines extends Component {
 		});
 	};
 
+	exploreHeadlines = (url) => {
+		if (Platform.OS == 'ios') {
+			Linking.canOpenURL(url).then((supported) => {
+				if (supported) {
+					Linking.openURL(url);
+				}
+			});
+		} else {
+			CustomTabs.openURL(url, {
+				toolbarColor: GLOBAL_CONFIG.COLOR.THEME_COLOR,
+				enableUrlBarHiding: true,
+				showPageTitle: true,
+				enableDefaultShare: true,
+				animations: ANIMATIONS_SLIDE,
+				headers: {
+					'my-custom-header': 'MY FEED'
+				},
+				forceCloseOnRedirection: true
+			});
+		}
+	};
+
 	_renderItem = (news) => {
 		return (
-			<View style={styles.cardView} key={news.source.id}>
+			<TouchableOpacity
+				style={styles.cardView}
+				key={news.source.id}
+				onPress={() => {
+					this.exploreHeadlines(news.url);
+				}}
+			>
 				<View style={GlobalStyles.flexDirectionRow}>
 					<View style={[ GlobalStyles.center, GlobalStyles.flexDirectionColumn, styles.imageSection ]}>
 						<View style={[ styles.imageBox, styles.imageBoxBorderRadius, styles.imageBoxBackground ]}>
@@ -75,7 +104,7 @@ class NewsHeadlines extends Component {
 						</View>
 					</View>
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	};
 
