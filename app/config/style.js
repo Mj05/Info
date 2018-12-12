@@ -11,6 +11,12 @@ const GlobalStyles = StyleSheet.create({
     },
     textAlignCenter: {
         textAlign: 'center'
+    },
+    flexDirectionRow: {
+        flexDirection: "row"
+    },
+    flexDirectionColumn: {
+        flexDirection: "column"
     }
 });
 
