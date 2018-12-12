@@ -7,8 +7,14 @@ import { getNewsSources, updateNewsSource } from '../../models/news-source/actio
 import Loader from '../../components/loader';
 import styles from './style';
 import GridView from 'react-native-super-grid';
+import Header from '../../components/header';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class NewsSources extends Component {
+	static navigationOptions = ({ navigation }) => ({
+		header: <Header title={GLOBAL_LANG.MY_FEED} isSettingsVisible={false} navigation={navigation} />
+	});
+
 	static propTypes = {
 		dispatch: PropTypes.func,
 		news_sources: PropTypes.array,
@@ -52,13 +58,16 @@ class NewsSources extends Component {
 	_renderItem = (news_source) => {
 		return (
 			<TouchableOpacity
-				style={[ GlobalStyles.center, styles.newsSourceView, { flexDirection: 'column' } ]}
+				style={[ GlobalStyles.center, styles.newsSourceView, GlobalStyles.flexDirectionColumn ]}
 				onPress={() => {
 					this.selectNewsSource(news_source.id);
 				}}
 			>
 				<Text style={GlobalStyles.textAlignCenter}>{news_source.name}</Text>
-				{this.props.selected_news_source == news_source.id ? <Text>selected</Text> : null}
+
+				{this.props.selected_news_source == news_source.id ? (
+					<Icon name="ios-done-all" size={30} color={GLOBAL_CONFIG.COLOR.GREEN} />
+				) : null}
 			</TouchableOpacity>
 		);
 	};
@@ -74,6 +83,9 @@ class NewsSources extends Component {
 			return (
 				<View style={[ GlobalStyles.container, GlobalStyles.center ]}>
 					<ScrollView>
+						<View style={styles.titleTextView}>
+						   <Text style={[styles.titleText, GlobalStyles.underlineText]}>{GLOBAL_LANG.SELECT_NEWS_SOURCE}</Text>
+						</View>
 						<GridView
 							itemDimension={100}
 							items={this.props.news_sources}

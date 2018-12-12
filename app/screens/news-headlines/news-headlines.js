@@ -6,8 +6,14 @@ import PropTypes from 'prop-types';
 import { getNewsHeadlines } from '../../models/news-headline/action';
 import Loader from '../../components/loader';
 import styles from './style';
+import Header from '../../components/header';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class NewsHeadlines extends Component {
+	static navigationOptions = ({ navigation }) => ({
+		header: <Header title={GLOBAL_LANG.MY_FEED} isSettingsVisible={true} navigation={navigation} />
+	});
+
 	static propTypes = {
 		dispatch: PropTypes.func,
 		news_headlines: PropTypes.array,
@@ -50,14 +56,14 @@ class NewsHeadlines extends Component {
 			<View style={styles.cardView} key={news.source.id}>
 				<View style={GlobalStyles.flexDirectionRow}>
 					<View style={[ GlobalStyles.center, GlobalStyles.flexDirectionColumn, styles.imageSection ]}>
-						<View style={[ styles.imageBox, styles.imageBoxBorderRadius ]}>
+						<View style={[ styles.imageBox, styles.imageBoxBorderRadius, styles.imageBoxBackground ]}>
 							<Image
-								style={[styles.imageBoxBorderRadius, styles.imageBox ]}
+								style={[ styles.imageBoxBorderRadius, styles.imageBox ]}
 								source={{ uri: news.urlToImage }}
 							/>
 						</View>
 						<View style={[ GlobalStyles.center, styles.textPadding ]}>
-							<Text>{news.source.name}</Text>
+							<Text style={styles.newsSourceName}>{news.source.name}</Text>
 						</View>
 					</View>
 					<View style={[ GlobalStyles.flexDirectionColumn, styles.contentSecton ]}>
@@ -84,7 +90,11 @@ class NewsHeadlines extends Component {
 			return (
 				<View style={[ GlobalStyles.container, GlobalStyles.center ]}>
 					<ScrollView>
-						<FlatList data={this.props.news_headlines} renderItem={(news) => this._renderItem(news.item)} />
+						<FlatList
+							data={this.props.news_headlines}
+							renderItem={(news) => this._renderItem(news.item)}
+							keyExtractor={(news, index) => index.toString()}
+						/>
 					</ScrollView>
 					{this.state.isNotificationSectionVisible ? (
 						<View style={styles.notificationSection}>

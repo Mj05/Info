@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
     },
     descriptionFonts: {
         fontSize: 11
+    },
+    newsSourceName: {
+        fontSize: 9
+    },
+    imageBoxBackground: {
+        backgroundColor: GLOBAL_CONFIG.COLOR.NEWS_BOX_BG_COLOR
     }
 });
 
