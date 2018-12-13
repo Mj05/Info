@@ -8,6 +8,7 @@ import {
 	Alert,
 	Image,
 	Linking,
+	BackHandler,
 	RefreshControl
 } from 'react-native';
 import GlobalStyles from '../../config/style';
@@ -48,6 +49,42 @@ class NewsHeadlines extends Component {
 				this.getNewsHeadlinesFailed(error_message)
 			)
 		);
+
+		// Handle device back press to exit app
+		this.willFocus = this.props.navigation.addListener('willFocus', () => {
+			BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+		});
+
+		this.willBlur = this.props.navigation.addListener('willBlur', () => {
+			BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+		});
+	};
+
+	componentWillUnmount = () => {
+		this.willBlur.remove();
+		this.willFocus.remove();
+	};
+
+	handleBackButtonClick = () => {
+		Alert.alert(
+			'Exit Info',
+			'Exiting the application..?',
+			[
+				{
+					text: 'Cancel',
+					onPress: () => console.log('Cancel Pressed'),
+					style: 'cancel'
+				},
+				{
+					text: 'OK',
+					onPress: () => BackHandler.exitApp()
+				}
+			],
+			{
+				cancelable: false
+			}
+		);
+		return true;
 	};
 
 	getNewsHeadlinesSuccess = () => {
@@ -146,7 +183,7 @@ class NewsHeadlines extends Component {
 			);
 		} else {
 			return (
-				<View style={[ GlobalStyles.container, GlobalStyles.center ]}>
+				<View style={[ GlobalStyles.center, GlobalStyles.flex, GlobalStyles.containerBackground]}>
 					<ScrollView
 						refreshControl={
 							<RefreshControl

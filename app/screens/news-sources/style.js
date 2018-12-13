@@ -8,8 +8,7 @@ const styles = StyleSheet.create({
 		height: 100,
 		backgroundColor: GLOBAL_CONFIG.COLOR.THEME_COLOR,
 		borderColor: GLOBAL_CONFIG.COLOR.OFF_WHITE,
-		borderRadius: 20,
-		borderWidth: 2
+		borderRadius: 20
 	},
 	titleText: {
 		fontSize: 17,

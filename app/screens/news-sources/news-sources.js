@@ -68,7 +68,7 @@ class NewsSources extends Component {
 				<Text style={GlobalStyles.textAlignCenter}>{news_source.name}</Text>
 
 				{this.props.selected_news_source == news_source.id ? (
-					<Icon name="ios-done-all" size={30} color={GLOBAL_CONFIG.COLOR.GREEN} />
+					<Icon name="ios-done-all" size={35} color={GLOBAL_CONFIG.COLOR.GREEN} />
 				) : null}
 			</TouchableOpacity>
 		);
@@ -91,7 +91,7 @@ class NewsSources extends Component {
 			);
 		} else {
 			return (
-				<View style={[ GlobalStyles.container, GlobalStyles.center ]}>
+				<View style={[ GlobalStyles.flex, GlobalStyles.containerBackground, GlobalStyles.center ]}>
 					<ScrollView
 						refreshControl={
 							<RefreshControl

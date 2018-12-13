@@ -32,6 +32,12 @@ const GlobalStyles = StyleSheet.create({
 	},
 	underlineText: {
 		textDecorationLine: 'underline'
+	},
+	containerBackground: {
+		backgroundColor: GLOBAL_CONFIG.COLOR.BACKGROUND
+	},
+	flex: {
+		flex: 1
 	}
 });
 
