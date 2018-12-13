@@ -36,7 +36,10 @@ const styles = StyleSheet.create({
     },
     imageBoxBackground: {
         backgroundColor: GLOBAL_CONFIG.COLOR.IMG_BACK_COLOR
-    }
+    },
+    notificationSection: {
+		padding: '5%'
+	},
 });
 
 export default styles;

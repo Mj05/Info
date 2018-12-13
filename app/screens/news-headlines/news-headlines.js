@@ -132,7 +132,7 @@ class NewsHeadlines extends Component {
 	};
 
 	_onRefresh = () => {
-		this.setState({ refreshing: true });
+		this.setState({ refreshing: true, isNotificationSectionVisible: false });
 		// Dispatch action to get news headlines from the selected news source
 		this.props.dispatch(
 			getNewsHeadlines(this.props.news_source, this.getNewsHeadlinesSuccess, (error_message) =>

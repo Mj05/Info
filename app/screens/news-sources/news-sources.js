@@ -75,7 +75,7 @@ class NewsSources extends Component {
 	};
 
 	_onRefresh = () => {
-		this.setState({ refreshing: true });
+		this.setState({ refreshing: true, isNotificationSectionVisible: false });
 		// Dispatch action to get news sources
 		this.props.dispatch(
 			getNewsSources(this.getNewsSourcesSuccess, (error_message) => this.getNewsSourcesFailed(error_message))
