@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, FlatList, Platform, Image, Linking } from 'react-native';
+import {
+	View,
+	Text,
+	ScrollView,
+	TouchableOpacity,
+	FlatList,
+	Platform,
+	Image,
+	Linking,
+	RefreshControl
+} from 'react-native';
 import GlobalStyles from '../../config/style';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -26,7 +36,8 @@ class NewsHeadlines extends Component {
 		this.state = {
 			isLoadingSources: false,
 			isNotificationSectionVisible: false,
-			errorNotification: null
+			errorNotification: null,
+			refreshing: false
 		};
 	}
 
@@ -41,14 +52,15 @@ class NewsHeadlines extends Component {
 	};
 
 	getNewsHeadlinesSuccess = () => {
-		this.setState({ isLoadingSources: false });
+		this.setState({ isLoadingSources: false, refreshing: false });
 	};
 
 	getNewsHeadlinesFailed = (error_message) => {
 		this.setState({
 			isLoadingSources: false,
 			isNotificationSectionVisible: true,
-			errorNotification: error_message
+			errorNotification: error_message,
+			refreshing: false
 		});
 	};
 
@@ -119,6 +131,16 @@ class NewsHeadlines extends Component {
 		);
 	};
 
+	_onRefresh = () => {
+		this.setState({ refreshing: true });
+		// Dispatch action to get news headlines from the selected news source
+		this.props.dispatch(
+			getNewsHeadlines(this.props.news_source, this.getNewsHeadlinesSuccess, (error_message) =>
+				this.getNewsHeadlinesFailed(error_message)
+			)
+		);
+	};
+
 	render() {
 		if (this.state.isLoadingSources) {
 			return (
@@ -129,7 +151,15 @@ class NewsHeadlines extends Component {
 		} else {
 			return (
 				<View style={[ GlobalStyles.container, GlobalStyles.center ]}>
-					<ScrollView>
+					<ScrollView
+						refreshControl={
+							<RefreshControl
+								refreshing={this.state.refreshing}
+								onRefresh={this._onRefresh}
+								colors={[ GLOBAL_CONFIG.COLOR.THEME_COLOR ]}
+							/>
+						}
+					>
 						<FlatList
 							data={this.props.news_headlines}
 							renderItem={(news) => this._renderItem(news.item)}

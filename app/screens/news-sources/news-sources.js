@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import GlobalStyles from '../../config/style';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -26,7 +26,8 @@ class NewsSources extends Component {
 		this.state = {
 			isLoadingSources: false,
 			isNotificationSectionVisible: false,
-			errorNotification: null
+			errorNotification: null,
+			refreshing: false
 		};
 	}
 
@@ -39,14 +40,15 @@ class NewsSources extends Component {
 	};
 
 	getNewsSourcesSuccess = () => {
-		this.setState({ isLoadingSources: false });
+		this.setState({ isLoadingSources: false, refreshing: false });
 	};
 
 	getNewsSourcesFailed = (error_message) => {
 		this.setState({
 			isLoadingSources: false,
 			isNotificationSectionVisible: true,
-			errorNotification: error_message
+			errorNotification: error_message,
+			refreshing: false
 		});
 	};
 
@@ -72,6 +74,14 @@ class NewsSources extends Component {
 		);
 	};
 
+	_onRefresh = () => {
+		this.setState({ refreshing: true });
+		// Dispatch action to get news sources
+		this.props.dispatch(
+			getNewsSources(this.getNewsSourcesSuccess, (error_message) => this.getNewsSourcesFailed(error_message))
+		);
+	};
+
 	render() {
 		if (this.state.isLoadingSources) {
 			return (
@@ -82,9 +92,19 @@ class NewsSources extends Component {
 		} else {
 			return (
 				<View style={[ GlobalStyles.container, GlobalStyles.center ]}>
-					<ScrollView>
+					<ScrollView
+						refreshControl={
+							<RefreshControl
+								refreshing={this.state.refreshing}
+								onRefresh={this._onRefresh}
+								colors={[ GLOBAL_CONFIG.COLOR.THEME_COLOR ]}
+							/>
+						}
+					>
 						<View style={styles.titleTextView}>
-						   <Text style={[styles.titleText, GlobalStyles.underlineText]}>{GLOBAL_LANG.SELECT_NEWS_SOURCE}</Text>
+							<Text style={[ styles.titleText, GlobalStyles.underlineText ]}>
+								{GLOBAL_LANG.SELECT_NEWS_SOURCE}
+							</Text>
 						</View>
 						<GridView
 							itemDimension={100}
