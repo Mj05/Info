@@ -68,7 +68,7 @@ class NewsSources extends Component {
 				<Text style={GlobalStyles.textAlignCenter}>{news_source.name}</Text>
 
 				{this.props.selected_news_source == news_source.id ? (
-					<Icon name="ios-done-all" size={35} color={GLOBAL_CONFIG.COLOR.GREEN} />
+					<Icon name="ios-checkmark-circle-outline" size={35} color={GLOBAL_CONFIG.COLOR.GREEN} />
 				) : null}
 			</TouchableOpacity>
 		);
