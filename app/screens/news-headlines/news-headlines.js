@@ -5,7 +5,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	FlatList,
-	Platform,
+	Alert,
 	Image,
 	Linking,
 	RefreshControl
@@ -18,7 +18,6 @@ import Loader from '../../components/loader';
 import styles from './style';
 import Header from '../../components/header';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { CustomTabs, ANIMATIONS_SLIDE } from 'react-native-custom-tabs';
 
 class NewsHeadlines extends Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -65,25 +64,22 @@ class NewsHeadlines extends Component {
 	};
 
 	exploreHeadlines = (url) => {
-		if (Platform.OS == 'ios') {
-			Linking.canOpenURL(url).then((supported) => {
-				if (supported) {
-					Linking.openURL(url);
-				}
-			});
-		} else {
-			CustomTabs.openURL(url, {
-				toolbarColor: GLOBAL_CONFIG.COLOR.THEME_COLOR,
-				enableUrlBarHiding: true,
-				showPageTitle: true,
-				enableDefaultShare: true,
-				animations: ANIMATIONS_SLIDE,
-				headers: {
-					'my-custom-header': 'MY FEED'
-				},
-				forceCloseOnRedirection: true
-			});
-		}
+		Linking.canOpenURL(url).then((supported) => {
+			if (supported) {
+				Linking.openURL(url);
+			} else {
+				Alert.alert(
+					'Oops..',
+					'ERR: Unable to explore this news',
+					[
+						{
+							text: 'OK'
+						}
+					],
+					{ cancelable: false }
+				);
+			}
+		});
 	};
 
 	_renderItem = (news) => {
